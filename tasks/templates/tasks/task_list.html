@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="{% static 'tasks/style.css' %}">
+	<title>Document</title>
+</head>
+<body>
+
+<section>
+		<div>
+			<div> 
+				<h1>Remaining Tasks</h1>
+				<p>{{ remaining }}</p>
+			</div>
+			<div>
+				<h2>Tasks Completed This Week</h2>
+				<p> {{ completed_this_week }} </p>
+			</div>
+			<div>
+				<h3>OVERDUE TASKS</h3>
+				<p>{{ overdue }} </p>
+			</div>
+		</div>
+</section>
+
+<section>
+
+	<div>
+		<form method="POST" action="/tasks/create/">
+			{% csrf_token %}
+			<label>Task Title</label>
+			<input type="text" name="title">
+			<label>Task Description</label>
+			<input type="text" name="body">
+			<label>Due Date</label>
+			<input type="date" name="due_date">
+			<label>Priority</label>
+			<select name="priority" id="priority">
+				<option value="high">High</option>
+				<option value="medium">Medium</option>
+				<option value="low">Low</option>
+			</select>
+			<input type="submit">
+		</form>
+	</div>
+
+</section>
+
+
+<section>
+
+	<div>
+		<h4>Tasks</h4>
+
+		{% for task in all_tasks %}
+		<div class="task-card {% if task.completed %} completed {% endif %}">
+			<div>
+				<div>
+					<h4>{{ task.title }}</h4>
+					<p>{{ task.body }}</p>
+				</div>
+				<div>
+					{{ task.priority }}
+				</div>
+				<div>
+					{% if task.due_date %}
+						{{ task.due_date }}
+					{% else %}
+						No due date
+					{% endif %}	
+				</div>
+				<div>
+					<form method="POST" action="/tasks/complete/{{ task.id }}/">
+						{% csrf_token %}
+						<button type="submit">Mark as Complete</button>
+					</form>
+					<form method="POST" action="/tasks/delete/{{ task.id }}/">
+						{% csrf_token %}
+						<button type="submit">Delete Task</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+
+</section>
+</body>
+</html>
