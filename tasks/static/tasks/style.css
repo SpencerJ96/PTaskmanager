@@ -1,3 +1,195 @@
-.completed{
-	background-color: rgba(0, 200, 100, 0.2);
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #ede7f6;
+    font-family: 'Caveat', cursive;
+    min-height: 100vh;
+    padding: 40px;
+}
+
+section {
+    margin-bottom: 40px;
+}
+
+section:first-of-type > div{					/* Target first section of the page only. > div = the first direct child div inside that section (only the wrapper div in stats section) */
+	display: flex;								
+	justify-content: center;
+	align-items: center;
+	gap: 40px;
+}
+
+.stat-card {
+	background: #f8f4ff;
+	border-radius: 25px;
+	padding: 10px;
+	width: 130px;
+	height: 130px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.stat-number{
+	font-size: 30px;
+	font-weight: bold;
+	color: #7c3aed;
+}
+.ring-card{
+background: #f8f4ff;
+border-radius: 25px;
+padding: 10px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+width: 130px;
+box-shadow: 0 4px 12px rgba(0,0,0,0.08);	
+}
+
+.ring-card svg{
+	width: 120px;
+	height: 120px;
+}
+
+.ring-bg{
+	fill: none;
+	stroke: #e8deff;
+	stroke-width: 10;
+}
+
+.ring-fill{
+	fill:none;
+	stroke: #b39ddb;
+	stroke-width: 10;
+	stroke-linecap: round;
+	transform: rotate(-90deg);
+	transform-origin: 50% 50%;
+	stroke-dasharray: 251;
+}
+
+.ring-number{
+	font-weight: bold;
+	font-size: 30px;
+	color: #7c3aed;
+}
+.ring-label{
+	font-size: 15px;
+	color: #9e86b8;
+}
+
+section:nth-of-type(2) > div{
+	background: #f8f4ff;
+	border-radius: 25px;
+	padding: 10px;
+	width: 360px;
+	gap: 12px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+	margin: 0 auto;
+}
+.task-form{
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	width: 100%;
+}
+.form-button{
+	color: #000000;
+	padding: 8px;
+	border-radius: 25px;
+	font-size: 15px;
+	cursor: pointer;
+	background-color: #dcc7f3;
+	border: 1px solid transparent;
+	transition: filter 0.2s, transform 0.2s;
+	display: block;
+	margin: 0 auto;
+}
+.form-button:hover{
+	border: black;
+	filter: brightness(1.1);
+	transform: scale(1.02);
+	border: 1px solid black
+}
+
+input[type="text"], input[type="date"], select{
+	padding: 12px;
+	border: 1px solid #6f4d94;
+	border-radius: 25px;
+	background: #d899ea;
+	width: 100%;
+}
+.task-grid{
+	display: grid;
+	grid-template-columns: repeat(3,1fr);
+	gap: 12px;
+	padding: 10px;
+}
+.task-card{
+	background: #f1f08f;
+	border-radius: 25px;
+	padding: 12px;
+	border: 1px solid #e1b629;
+	transition: filter 0.2s, transform 0.2s;
+	
+}
+.task-card:hover{
+	filter: brightness (1.1);
+	transform: scale(1.02);
+}
+.card-top{
+	border-bottom: 1px solid #e1b629;
+}
+.task-title{
+	font-weight: bold;
+	font-size: 26px;
+}
+.card-top p{
+	font-size: 18px;
+	color: #555;
+	padding: 4px 0 8px 0;
+}
+.card-meta{
+	display: flex;
+	justify-content: space-between;
+	padding: 8px 0;
+	font-size: 15px;
+	color: #888;
+}
+.card-actions{
+	display: flex;
+	gap: 8px;
+	padding-top: 8px;
+}
+.card-actions form {
+	flex: 1;
+}
+.card-actions button {
+    width: 100%;
+    padding: 6px;
+    border-radius: 25px;
+    border: none;
+    font-family: 'Caveat', cursive;
+    font-size: 15px;
+    cursor: pointer;
+}
+.card-actions form:first-of-type button{
+	background-color: #b2dfdb;
+}
+.card-actions form:last-of-type button {
+    background-color: #ffcdd2;
+}
+.completed {
+    background-color: #d4edda;
+    border-color: #a5d6a7;
+    opacity: 0.7;
 }

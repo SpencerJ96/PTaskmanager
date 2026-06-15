@@ -11,17 +11,27 @@
 
 <section>
 		<div>
-			<div> 
-				<h1>Remaining Tasks</h1>
-				<p>{{ remaining }}</p>
+			<div class="stat-card">
+  			  <p class="stat-number">{{ remaining }}</p>
+  			  <p class="ring-label">Remaining</p>
+		</div>
+			
+			<div class="ring-card">
+				<svg viewBox="0 0 100 100">
+					<circle class="ring-bg" cx="50" cy="50" r="40"/>
+					<circle class="ring-fill" cx="50" cy="50" r="40" style="stroke-dashoffset: {{ completed_offset }}"/>
+				</svg>
+				<p class="ring-label">Completed This Week</p>
+				<p class="ring-number"> {{ completed_this_week }}</p>
 			</div>
-			<div>
-				<h2>Tasks Completed This Week</h2>
-				<p> {{ completed_this_week }} </p>
-			</div>
-			<div>
-				<h3>OVERDUE TASKS</h3>
-				<p>{{ overdue }} </p>
+			
+			<div class="ring-card">
+				<svg viewBox="0 0 100 100">
+					<circle class="ring-bg" cx="50" cy="50" r="40"/>
+					<circle class="ring-fill" cx="50" cy="50" r="40" style="stroke-dashoffset: {{ overdue_offset }}"/>
+				</svg>
+					<p class="ring-label">Overdue</p>
+					<p class="ring-number">{{ overdue }}</p>			
 			</div>
 		</div>
 </section>
@@ -29,21 +39,31 @@
 <section>
 
 	<div>
-		<form method="POST" action="/tasks/create/">
+		<form class="task-form" method="POST" action="/tasks/create/">
 			{% csrf_token %}
+			<div>
 			<label>Task Title</label>
 			<input type="text" name="title">
+			</div>
+			<div>
 			<label>Task Description</label>
 			<input type="text" name="body">
+			</div>
+			<div>
 			<label>Due Date</label>
 			<input type="date" name="due_date">
+			</div>
+			<div>
 			<label>Priority</label>
 			<select name="priority" id="priority">
 				<option value="high">High</option>
 				<option value="medium">Medium</option>
 				<option value="low">Low</option>
 			</select>
-			<input type="submit">
+			</div>
+			<div>
+			<input type="submit" class="form-button">
+			</div>
 		</form>
 	</div>
 
@@ -51,42 +71,35 @@
 
 
 <section>
-
-	<div>
-		<h4>Tasks</h4>
-
-		{% for task in all_tasks %}
-		<div class="task-card {% if task.completed %} completed {% endif %}">
-			<div>
-				<div>
-					<h4>{{ task.title }}</h4>
-					<p>{{ task.body }}</p>
+	<div class="task-grid">
+		{% for each_task in all_tasks %}
+			<div class="task-card {% if each_task.completed %}completed{% endif %}">
+				<div class="card-top">
+					<h4 class="task-title"> {{ each_task.title }}</h4>
+					<p> {{ each_task.body }}</p>
 				</div>
-				<div>
-					{{ task.priority }}
+				<div class="card-meta">
+					<p>{% if each_task.due_date %}
+							{{ each_task.due_date }}
+						{% else %}
+							No due date
+						{% endif %}
+					</p>
+					<P>{{ each_task.priority }}</P>
 				</div>
-				<div>
-					{% if task.due_date %}
-						{{ task.due_date }}
-					{% else %}
-						No due date
-					{% endif %}	
-				</div>
-				<div>
-					<form method="POST" action="/tasks/complete/{{ task.id }}/">
+				<div class="card-actions">
+					<form method="POST" action="/tasks/complete/{{ each_task.id }}/">
 						{% csrf_token %}
 						<button type="submit">Mark as Complete</button>
 					</form>
-					<form method="POST" action="/tasks/delete/{{ task.id }}/">
+					<form method="POST" action="/tasks/delete/{{ each_task.id }}/">
 						{% csrf_token %}
-						<button type="submit">Delete Task</button>
+						<button type="submit">Delete Task?</button>
 					</form>
 				</div>
 			</div>
-		</div>
 		{% endfor %}
 	</div>
-
 </section>
 </body>
 </html>

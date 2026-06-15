@@ -32,12 +32,27 @@ def task_list(request):
 	#due date is less than today, inclue it
 	overdue = Task.objects.filter(completed=False, due_date__lt=today).count()
 
-	#Pass four pieces of data to the template, what to reference them as first and their actual values second
+	total_ever = Task.objects.count()
+	total_incomplete = Task.objects.filter(completed=False).count()
+
+
+	#Ternary Operators (Yoda Speak) read it backwards
+		#251 is the stroke of the circle 
+			#completed this week divided by remaining tasks multiplied by 251 to give us the offset px fill circles
+			#True condition on left, false condition on right. Look for the "if"
+	completed_offset = 251 - (completed_this_week / remaining * 251) if remaining > 0 else 251
+	overdue_offset = (overdue / remaining * 251 ) if remaining > 0 else 0
+
+
+	#Pass six pieces of data to the template, what to reference them as first and their actual values second
 	return render(request, "tasks/task_list.html", {
 		"all_tasks": all_tasks,
 		"remaining" : remaining,
 		"completed_this_week" : completed_this_week,
 		"overdue" : overdue,
+		"completed_offset" : completed_offset,
+		"overdue_offset" : overdue_offset
+
 	})
  
 
