@@ -9,97 +9,195 @@
 </head>
 <body>
 
-<section>
-		<div>
-			<div class="stat-card">
-  			  <p class="stat-number">{{ remaining }}</p>
-  			  <p class="ring-label">Remaining</p>
-		</div>
-			
-			<div class="ring-card">
-				<svg viewBox="0 0 100 100">
-					<circle class="ring-bg" cx="50" cy="50" r="40"/>
-					<circle class="ring-fill" cx="50" cy="50" r="40" style="stroke-dashoffset: {{ completed_offset }}"/>
-				</svg>
-				<p class="ring-label">Completed This Week</p>
-				<p class="ring-number"> {{ completed_this_week }}</p>
-			</div>
-			
-			<div class="ring-card">
-				<svg viewBox="0 0 100 100">
-					<circle class="ring-bg" cx="50" cy="50" r="40"/>
-					<circle class="ring-fill" cx="50" cy="50" r="40" style="stroke-dashoffset: {{ overdue_offset }}"/>
-				</svg>
-					<p class="ring-label">Overdue</p>
-					<p class="ring-number">{{ overdue }}</p>			
-			</div>
-		</div>
-</section>
+<nav>
+	<ul>
+		<li><a href="{% url 'task_list' %}">Home</a></li>
+		<li><a href="{% url 'task_all' %}">All Tasks</a></li>
+		<li><a href="{% url 'task_allCompleted' %}">Completed Tasks</a></li>
+		<li><a href="{% url 'task_filter' %}?category=gym">Gym</a></li>
+		<li><a href="{% url 'task_filter' %}?category=work">Work</a></li>
+		<li><a href="{% url 'task_filter' %}?category=dog">Jasper</a></li>
+		<li><a href="{% url 'task_filter' %}?category=housework">Housework</a></li>
+		<li><a href="{% url 'task_filter' %}?category=shopping">Shopping</a></li>
+		<li><a href="{% url 'task_filter' %}?category=miscellaneous">Miscellaneous</a></li>
+	</ul>
+</nav>
 
-<section>
+<header>
+	<h1 class="headerTitle">Welcome Back Spencer!</h1>
+	<input type="text" placeholder="Search Tasks..">
+</header>
 
-	<div>
-		<form class="task-form" method="POST" action="/tasks/create/">
-			{% csrf_token %}
-			<div>
-			<label>Task Title</label>
-			<input type="text" name="title">
+<main>
+
+<div class="dashboard-card">
+
+	<div class="todo-section">
+		<div class="todo-header">
+			<h2 class="todo-h2">To-do</h2>
+			<button id="openModal">+ Add Task</button>
+		</div>
+
+		{% for each_task in all_tasks|slice:":3" %}
+		<div class="task-card">
+			<div class="card-top">
+			<span class="task-icon">
+				{% if each_task.category == "gym" %}🏋️
+				{% elif each_task.category == "dog" %}🐶
+				{% elif each_task.category == "work" %}💼
+				{% elif each_task.category == "shopping" %}🛒
+				{% elif each_task.category == "housework" %}🏠
+				{% else %} 📝
+				{% endif %}
+			</span>
+			<div class="card-badges">
+				<p class="task-status"> {{ each_task.get_status_display }} </p>
+				<p class="task-priority"> {{ each_task.get_priority_display}} </p>
 			</div>
-			<div>
-			<label>Task Description</label>
-			<input type="text" name="body">
 			</div>
-			<div>
-			<label>Due Date</label>
-			<input type="date" name="due_date">
+			<p class="task-title"> {{ each_task.title }} </p>
+			<p class="task-body"> {{ each_task.body }} </p>
+			<p class="task-due"> {{ each_task.due_date }} </p>
+			<div class="card-actions">
+				<form method="POST" action="{% url 'task_status' each_task.id %}">
+					{% csrf_token %}
+					<button type="submit" class="statusButton">Next Status</button>
+				</form>
+				<form method="POST" action="{% url 'task_delete' each_task.id %}">
+					{% csrf_token %}
+					<button type="submit" class="deleteButton">Delete</button>
+				</form>
 			</div>
-			<div>
-			<label>Priority</label>
-			<select name="priority" id="priority">
-				<option value="high">High</option>
-				<option value="medium">Medium</option>
-				<option value="low">Low</option>
-			</select>
+		</div>
+		{% endfor %}
+		<div class="view-more">
+			<a href="{% url 'task_all' %}">View More</a>
+		</div>
+	</div>
+
+	<div class="right-panel">
+
+		<div class="rings-section">
+			<div class="completed-ring">
+			<svg viewBox="0 0 100 100">
+				<circle class="ring-bg" cx="50" cy="50" r="40"/>
+				<circle class="ring-fill" cx="50" cy="50" r="40" style="stroke-dashoffset: {{ completed_offset }}"/>
+			</svg>
+			<p class="ring-number">{{ completed }}</p>
+			<p class="ring-label">Completed</p>
 			</div>
-			<div>
-			<input type="submit" class="form-button">
+
+			<div class="inProgress-ring">
+			<svg viewBox="0 0 100 100">
+				<circle class="ring-bg" cx="50" cy="50" r="40"/>
+				<circle class="ring-fill" cx="50" cy="50" r="40" style="stroke-dashoffset: {{ inProgress_offset }}"/>
+			</svg>
+			<p class="ring-number"> {{ inProgress }}</p>
+			<p class="ring-label">In Progress</p>
+			</div>
+
+			<div class="notStarted-ring">
+			<svg viewBox="0 0 100 100">
+				<circle class="ring-bg" cx="50" cy="50" r="40"/>
+				<circle class="ring-fill" cx="50" cy="50" r="40" style="stroke-dashoffset: {{ notStarted_offset }}"/>
+			</svg>
+			<p class="ring-number"> {{ notStarted }}</p>
+			<p class="ring-label">Not Started</p>
+			</div>
+		</div>
+
+		<div class="completed-section">
+
+			{% for each_task in completed_tasks|slice:":3" %}
+			<div class="completed-card">
+				<p class="task-title">{{  each_task.title }}</p>
+				<p class="task-body">{{  each_task.body }}</p>
+			</div>
+			{% endfor %}
+			<div class="view-more">
+
+			<a href="{% url 'task_allCompleted' %}">View More</a>
+
+			</div>
+		</div>
+
+	</div>
+
+</div>
+
+</main>
+
+<div id="taskModal" class="modal hidden">
+	<div class="modal-content">
+		<button id="closeModal">✕</button>
+		<form method="POST" action="{% url 'task_create' %}">
+			 {% csrf_token %}
+			 <div class="formInput">
+				<label>Title</label>
+				 <input type="text" name="title">
+			</div>
+			 <div class="formInput">
+				<label>Task</label>
+				 <input type="text" name="body">
+			</div>
+			<div class="formInput">
+				<label>Priority</label>
+				 <select name="priority">
+					<option value="high">High</option>
+					<option value="medium">Medium</option>
+					<option value="low">Low</option>
+				 </select>
+			</div>
+			<div class="formInput">
+				<label>Date Due</label>
+				 <input type="date" name="due_date">
+			</div>
+			<div class="formInput">
+				<label>Category</label>
+				 <select name="category">
+					<option value="work">Work</option>
+					<option value="dog">Dog</option>
+					<option value="gym">Gym</option>
+					<option value="housework">Housework</option>
+					<option value="shopping">Shopping</option>
+					<option value="miscellaneous">Miscellaneous</option>
+				 </select>
+			</div>
+			<div class="formInput">
+				<label>Status</label>
+				<select name="status">
+					<option value="notStarted">Not Started</option>
+					<option value="inProgress">In Progress</option>
+				</select>
+			</div>
+			<div class="submitModal">
+				<button type="submit" id="submitModalButton">Create Task</button>
 			</div>
 		</form>
 	</div>
+</div>
 
-</section>
+<script>
+	document.getElementById("openModal").addEventListener("click", function(){
+		document.getElementById("taskModal").classList.remove("hidden");
+	});
 
+	document.getElementById("closeModal").addEventListener("click", function(){
+		document.getElementById("taskModal").classList.add("hidden");
+	})
 
-<section>
-	<div class="task-grid">
-		{% for each_task in all_tasks %}
-			<div class="task-card {% if each_task.completed %}completed{% endif %}">
-				<div class="card-top">
-					<h4 class="task-title"> {{ each_task.title }}</h4>
-					<p> {{ each_task.body }}</p>
-				</div>
-				<div class="card-meta">
-					<p>{% if each_task.due_date %}
-							{{ each_task.due_date }}
-						{% else %}
-							No due date
-						{% endif %}
-					</p>
-					<P>{{ each_task.priority }}</P>
-				</div>
-				<div class="card-actions">
-					<form method="POST" action="/tasks/complete/{{ each_task.id }}/">
-						{% csrf_token %}
-						<button type="submit">Mark as Complete</button>
-					</form>
-					<form method="POST" action="/tasks/delete/{{ each_task.id }}/">
-						{% csrf_token %}
-						<button type="submit">Delete Task?</button>
-					</form>
-				</div>
-			</div>
-		{% endfor %}
-	</div>
-</section>
+	document.addEventListener("keydown", function(e){
+		if (e.key === "Escape") {
+			document.getElementById("taskModal").classList.add("hidden");
+		}
+	});
+
+	document.getElementById("taskModal").addEventListener("click", function(e){
+		if (e.target === this){
+			this.classList.add("hidden");
+		}
+	})
+</script>
+
 </body>
 </html>
