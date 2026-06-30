@@ -52,8 +52,8 @@
 				{% endif %}
 			</span>
 			<div class="card-badges">
-				<p class="task-status"> {{ each_task.get_status_display }} </p>
-				<p class="task-priority"> {{ each_task.get_priority_display}} </p>
+				<p class="task-status {% if each_task.status == 'notStarted' %}status-notStarted{% elif each_task.status == 'inProgress' %}status-inProgress {% elif each_task.status == 'completed' %}status-completed{% endif %}"> {{ each_task.get_status_display }} </p>
+				<p class="task-priority {% if each_task.priority == 'low' %}priority-low{% elif each_task.priority == 'medium' %} priority-medium {% elif each_task.priority == 'high' %}priority-high{% endif %}"> {{ each_task.get_priority_display}} </p>
 			</div>
 			</div>
 			<p class="task-title"> {{ each_task.title }} </p>

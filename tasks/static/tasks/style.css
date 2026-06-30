@@ -226,6 +226,19 @@ main{
 	display: inline-block;
 	width: fit-content;
 }
+.status-notStarted { background: #ffb3b3;
+}
+.status-inProgress { background: #f3de8d;
+}
+.status-completed { background: #b3f0c2;
+}
+.priority-low { background: #b3f0c2;
+}
+.priority-medium { background: #f3de8d;
+}
+.priority-high { background: #ffb3b3;
+}
+
 .card-top{
 	display: flex;
 	justify-content: space-between;
