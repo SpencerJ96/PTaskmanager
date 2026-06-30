@@ -37,8 +37,9 @@
 			<h2 class="todo-h2">To-do</h2>
 			<button id="openModal">+ Add Task</button>
 		</div>
-
-		{% for each_task in all_tasks|slice:":3" %}
+	<div class="todo-grid">
+		{% for each_task in all_tasks|slice:":6" %}
+	
 		<div class="task-card">
 			<div class="card-top">
 			<span class="task-icon">
@@ -70,13 +71,14 @@
 			</div>
 		</div>
 		{% endfor %}
+		</div>
 		<div class="view-more">
 			<a href="{% url 'task_all' %}">View More</a>
 		</div>
 	</div>
 
 	<div class="right-panel">
-
+		<div class="rings-section-wrapper">
 		<div class="rings-section">
 			<div class="completed-ring">
 			<svg viewBox="0 0 100 100">
@@ -105,21 +107,27 @@
 			<p class="ring-label">Not Started</p>
 			</div>
 		</div>
+		</div>
+
+		
 
 		<div class="completed-section">
 
-			{% for each_task in completed_tasks|slice:":3" %}
+		<div class="completed-grid">
+			{% for each_task in completed_tasks|slice:":4" %}
 			<div class="completed-card">
-				<p class="task-title">{{  each_task.title }}</p>
-				<p class="task-body">{{  each_task.body }}</p>
+				<p class="completed-title">{{  each_task.title }}</p>
+				<p class="completed-body">{{  each_task.body }}</p>
 			</div>
 			{% endfor %}
+		</div>
 			<div class="view-more">
 
 			<a href="{% url 'task_allCompleted' %}">View More</a>
 
 			</div>
 		</div>
+		
 
 	</div>
 

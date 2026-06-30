@@ -56,6 +56,22 @@ main{
 
 
 /*  MODAL */
+
+#openModal{
+	background: #9e64f6;
+	color: #ffffff;
+	border: none;
+	border-radius: 25px;
+	padding: 6px 14px;
+	font-family: 'Outfit', sans-serif;
+	font-size: 14px;
+	cursor: pointer;
+	transition: background 0.2s, transform 0.2s;
+}
+#openModal:hover{
+	background: rgb(153, 19, 171);
+	transform: scale(1.05);
+}
 .hidden {
 	display: none !important;
 }
@@ -147,7 +163,7 @@ main{
 	box-shadow: 0 8px 24px rgba(0,0,0,0.1);
 	display: flex;
 	padding: 24px;
-	gap: 24px;
+	gap: 0px;
 }
 
 .task-card{
@@ -159,8 +175,12 @@ main{
 	gap: 8px;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 	margin-bottom: 12px;
+	transition: transform 0.2s, box-shadow 0.2s;
 }
-
+.task-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
 .task-icon{
 	font-size: 18px;
 	background: #ede7f6;
@@ -272,6 +292,14 @@ main{
 	width: 80px;
 	height: 80px;
 }
+.rings-section-wrapper {
+	padding: 24px;
+	border-bottom: 1px solid #e0d4f7;
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
 .rings-section{
 	display: flex;
 	flex-direction: row;
@@ -287,27 +315,77 @@ main{
 }
 /* Completed Section    */
 .completed-card{
-	background: #f8f4ff;
-	border-radius: 16px;
-	padding: 16px;
+	background: #ede7f6;
+	border-radius: 12px;
+	padding: 10px 14px;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	font-size: 13px;
+	transition: background 0.2s, transform 0.2s;
+	cursor: pointer;
+}
+
+.completed-card:hover{
+	background: #c2a4f0;
+	transform: scale(1.1);
+}
+.completed-title{
+	font-weight: 600;
+	color: #9b72cf;
+}
+.completed-body{
+	color: #6e6d6d;
+	font-size: 12px;
+}
+.completed-section{
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-	margin-bottom: 12px;
-	max-width: 300px;
-	margin: 0 auto;
+	padding: 24px;
+	flex: 1;
+	overflow-y: auto;
+}
+.completed-grid{
+	display: grid;
+	grid-template-columns: repeat(2,1fr);
+	gap: 8px;
 }
 .right-panel{
 	display: flex;
 	flex-direction: column;
-	gap: 24px;
+	gap: 0;
 	flex: 1;
-	border-left: 1px solid #e0d4f7;
-    padding-left: 24px;
+	align-self: stretch;
 }
 
 .todo-section{
-	flex: 1;
-	max-width: 320px;
+	flex: 2;
+	padding-right: 24px;
+	border-right: 1px solid #e0d4f7;
+	display: flex;
+	flex-direction: column;
+}
+.todo-grid{
+	display: grid;	
+	grid-template-columns: repeat(2,1fr);
+	gap: 12px;
+	margin-top: 16px;
+}
+.view-more{
+	display: flex;
+	justify-content: center;
+	margin-top: auto;
+	padding-top: 12px;
+}
+.view-more a{
+	color: #9b72cf;
+	text-decoration: none;
+	font-size: 13px;
+	opacity: 0.7s;
+	transition: opacity 0.2s;
+}
+.view-more a:hover{
+	opacity: 1;
+	color: #6d19dc;
 }
