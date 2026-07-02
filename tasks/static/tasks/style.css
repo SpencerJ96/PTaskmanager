@@ -402,3 +402,43 @@ main{
 	opacity: 1;
 	color: #6d19dc;
 }
+/* All Tasks page */
+.task-list{
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	padding: 20px;
+}
+.task-row{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	background: #f8f4ff;
+	border-radius: 16px;
+	padding: 16px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+	transition: transform	0.2s, box-shadow 0.2s;
+}
+.task-row:hover{
+	transform: scale(1.01);
+	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+}
+.row-left{
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	flex: 2;
+}
+.row-middle {
+	display: flex;
+	gap: 8px;
+	flex: 1;
+	justify-content: center;
+}
+.row-right{
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	flex: 1;
+	justify-content: flex-end;
+}

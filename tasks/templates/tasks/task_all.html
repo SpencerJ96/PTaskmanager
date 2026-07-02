@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="{% static 'tasks/style.css' %}">
+	<title>Document</title>
+</head>
+<body>
+
+<nav>
+	<ul>
+		<li><a href="{% url 'task_list' %}">Home</a></li>
+		<li><a href="{% url 'task_all' %}">All Tasks</a></li>
+		<li><a href="{% url 'task_allCompleted' %}">Completed Tasks</a></li>
+		<li><a href="{% url 'task_filter' %}?category=gym">Gym</a></li>
+		<li><a href="{% url 'task_filter' %}?category=work">Work</a></li>
+		<li><a href="{% url 'task_filter' %}?category=dog">Jasper</a></li>
+		<li><a href="{% url 'task_filter' %}?category=housework">Housework</a></li>
+		<li><a href="{% url 'task_filter' %}?category=shopping">Shopping</a></li>
+		<li><a href="{% url 'task_filter' %}?category=miscellaneous">Miscellaneous</a></li>
+	</ul>
+</nav>
+
+<header>
+	<h1 class="headerTitle">Welcome Back Spencer!</h1>
+	<input type="text" placeholder="Search Tasks..">
+</header>
+
+<main>
+
+<h2 class="allTasksHeader">All Tasks</h2>
+<div class="task-list">
+	{% for each_task in all_tasks %}
+	<div class="task-row">
+
+		<div class="row-left">
+			<span class="task-icon">
+				{% if each_task.category == "gym" %}🏋️
+				{% elif each_task.category == "dog" %}🐶
+				{% elif each_task.category == "work" %}💼
+				{% elif each_task.category == "shopping" %}🛒
+				{% elif each_task.category == "housework" %}🏠
+				{% else %} 📝
+				{% endif %}
+			</span>
+		<p class="allTaskTitle">{{ each_task.title }}</p>
+		<p class="allTaskBody">{{ each_task.body }}</p>
+		</div>
+		
+		<div class="row-middle">
+			<p class="task-status {% if each_task.status == 'notStarted' %}status-notStarted{% elif each_task.status == 'inProgress' %}status-inProgress {% elif each_task.status == 'completed' %}status-completed {% endif %}"> {{ each_task.get_status_display }}</p> 
+			<p class="task-priority {% if each_task.priority == 'low' %}priority-low{% elif each_task.priority == 'medium' %} priority-medium {% elif each_task.priority == 'high' %}priority-high{% endif %}"> {{ each_task.get_priority_display  }} </p>
+		</div>
+		<div class="row-right">
+			<p class="task-due">{{ each_task.due_date }}</p>
+				<div class="card-actions">
+					<form method="POST" action="{% url 'task_status' each_task.id %}">
+					{% csrf_token %}
+					<button type="submit" class="statusButton">Next Status</button>
+					</form>
+					<form method="POST" action="{% url 'task_delete' each_task.id %}">
+					{% csrf_token %}
+					<button type="submit" class="deleteButton">Delete</button>
+					</form>
+				</div>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+
+</main>
+</body>
+</html>

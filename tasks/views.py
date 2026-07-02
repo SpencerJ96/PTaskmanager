@@ -69,10 +69,7 @@ def task_status(request, task_id):				    #Task_id comes from button in browswer
 	task.save()										#Save to DB
 	return redirect("/tasks/")						#Redirect to tasks page
 
-def task_delete(request, task_id):
-	deleteTask = Task.objects.get(id=task_id)
-	deleteTask.delete()
-	return redirect("/tasks/")
+
 
 def task_all(request):
 	tasks = Task.objects.filter(status__in=["notStarted", "inProgress"])
@@ -89,3 +86,9 @@ def task_filter(request):		#Key in URL (HTML) has to match what you're reading i
 	else:
 		tasks = Task.objects.filter(category=taskcategory, status__in=["notStarted", "inProgress"]) # Filter all tasks where the model category matches the taskcategory variable. and status matches
 	return render(request, "tasks/partials/task_grid.html", {"all_tasks" : tasks}) #Only returning a fragment of the HTML from HTMX, just drop the task grid without reloading anything else 
+
+def task_delete(request, task_id):
+    deleteTask = Task.objects.get(id=task_id)
+    deleteTask.delete()
+    next_url = request.POST.get("next", "/tasks/") # python .get safely read the value by key (/tasks/completed/ is the value of next in the HTML) fall back to /tasks/ if no "next" key
+    return redirect(next_url)
