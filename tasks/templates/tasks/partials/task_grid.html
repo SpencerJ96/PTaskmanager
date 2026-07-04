@@ -1,0 +1,33 @@
+{% for each_task in all_tasks %}
+	
+		<div class="task-card">
+			<div class="card-top">
+			<span class="task-icon">
+				{% if each_task.category == "gym" %}🏋️
+				{% elif each_task.category == "dog" %}🐶
+				{% elif each_task.category == "work" %}💼
+				{% elif each_task.category == "shopping" %}🛒
+				{% elif each_task.category == "housework" %}🏠
+				{% else %} 📝
+				{% endif %}
+			</span>
+			<div class="card-badges">
+				<p class="task-status {% if each_task.status == 'notStarted' %}status-notStarted{% elif each_task.status == 'inProgress' %}status-inProgress {% elif each_task.status == 'completed' %}status-completed{% endif %}"> {{ each_task.get_status_display }} </p>
+				<p class="task-priority {% if each_task.priority == 'low' %}priority-low{% elif each_task.priority == 'medium' %} priority-medium {% elif each_task.priority == 'high' %}priority-high{% endif %}"> {{ each_task.get_priority_display}} </p>
+			</div>
+			</div>
+			<p class="task-title"> {{ each_task.title }} </p>
+			<p class="task-body"> {{ each_task.body }} </p>
+			<p class="task-due"> {{ each_task.due_date }} </p>
+			<div class="card-actions">
+				<form method="POST" action="{% url 'task_status' each_task.id %}">
+					{% csrf_token %}
+					<button type="submit" class="statusButton">Next Status</button>
+				</form>
+				<form method="POST" action="{% url 'task_delete' each_task.id %}">
+					{% csrf_token %}
+					<button type="submit" class="deleteButton">Delete</button>
+				</form>
+			</div>
+		</div>
+		{% endfor %}

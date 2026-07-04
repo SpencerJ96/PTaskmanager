@@ -79,7 +79,7 @@ def task_allCompleted(request):
 	tasks = Task.objects.filter(status="completed")
 	return render (request, "tasks/task_allCompleted.html", {"completed_tasks" : tasks})
 
-def task_filter(request):		#Key in URL (HTML) has to match what you're reading in the view
+def task_filter(request):		#Key in URL (HTML) has to match what you're reading in the view. "?category=gym" category is the key value is gym
 	taskcategory = request.GET.get("category", "all")  #first GET is Django get method for reading from URL and mapping key-pairs. Second get is python reading the key-pairs
 	if taskcategory == "all":
 		tasks = Task.objects.filter(status__in=["notStarted", "inProgress"]) #If there is no category selected(all in URL) display not started and in prog tasks
@@ -92,3 +92,14 @@ def task_delete(request, task_id):
     deleteTask.delete()
     next_url = request.POST.get("next", "/tasks/") # python .get safely read the value by key (/tasks/completed/ is the value of next in the HTML) fall back to /tasks/ if no "next" key
     return redirect(next_url)
+
+def task_edit(request, task_id):
+	editTask = Task.objects.get(id=task_id)
+	editTask.title = request.POST.get("title")
+	editTask.body = request.POST.get("body")
+	editTask.due_date = request.POST.get("due_date")
+	editTask.status = request.POST.get("status")
+	editTask.category = request.POST.get("category")
+	editTask.priority = request.POST.get("priority")
+	editTask.save()
+	return redirect ("/tasks/")
