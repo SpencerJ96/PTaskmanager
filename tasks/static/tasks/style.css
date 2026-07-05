@@ -239,7 +239,9 @@ main{
 }
 .priority-high { background: #ffb3b3;
 }
-
+.overdue{
+	border: 2px solid #e40e59
+}
 .card-top{
 	display: flex;
 	justify-content: space-between;
@@ -284,6 +286,22 @@ main{
 }
 .deleteButton:hover{
 	background-color: #e40e59;
+	transform: scale(1.1);
+}
+
+.editButton{
+	border-radius: 25px;
+	background: #7deaa3;
+	color: #ffffff;
+	padding: 6px 14px;
+	font-family: 'Outfit', sans-serif;
+	border: none;
+	transition: background 0.2s, transform 0.2s;
+	cursor: pointer;
+}
+
+.editButton:hover{
+	background:  #23e165;
 	transform: scale(1.1);
 }
 /* ----- RING SECTION */

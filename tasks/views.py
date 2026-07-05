@@ -14,6 +14,7 @@ def task_list(request):
 	completed =  Task.objects.filter(status="completed").count()
 	inProgress = Task.objects.filter(status="inProgress").count()
 	notStarted = Task.objects.filter(status="notStarted").count()
+	today = timezone.now().date()
 
 	total = notStarted + inProgress + completed
 	
@@ -25,7 +26,7 @@ def task_list(request):
 	notStarted_offset = 251 - (notStarted / total * 251) if total > 0 else 251
 
 
-	#Pass six pieces of data to the template, what to reference them as first and their actual values second
+	#Pass pieces of data to the template, what to reference them as first and their actual values second (Context)
 	return render(request, "tasks/task_list.html", {
 		"all_tasks": all_tasks,
 		"completed" : completed,
@@ -34,7 +35,8 @@ def task_list(request):
 		"notStarted" : notStarted,
 		"completed_offset" : completed_offset,
 		"inProgress_offset" : inProgress_offset,
-		"notStarted_offset" : notStarted_offset
+		"notStarted_offset" : notStarted_offset,
+		"today" : today
 	})
  
 
