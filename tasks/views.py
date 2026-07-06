@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from .models import Task
+from datetime import timedelta
 
 
 
@@ -15,7 +16,7 @@ def task_list(request):
 	inProgress = Task.objects.filter(status="inProgress").count()
 	notStarted = Task.objects.filter(status="notStarted").count()
 	today = timezone.now().date()
-
+	soon = today + timedelta(days=2)
 	total = notStarted + inProgress + completed
 	
 
@@ -36,7 +37,8 @@ def task_list(request):
 		"completed_offset" : completed_offset,
 		"inProgress_offset" : inProgress_offset,
 		"notStarted_offset" : notStarted_offset,
-		"today" : today
+		"today" : today,
+		"soon" : soon
 	})
  
 

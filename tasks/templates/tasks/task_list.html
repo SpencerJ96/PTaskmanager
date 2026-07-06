@@ -42,7 +42,7 @@
 	<div class="todo-grid" id="todo-grid">
 		{% for each_task in all_tasks|slice:":6" %}
 	
-		<div class="task-card {% if each_task.due_date < today %}overdue{% endif %}">
+		<div class="task-card {% if each_task.due_date < today %}overdue{% elif each_task.due_date > today and each_task.due_date <= soon %}soonTask{% endif %} ">
 			<div class="card-top">
 			<span class="task-icon">
 				{% if each_task.category == "gym" %}🏋️

@@ -242,6 +242,9 @@ main{
 .overdue{
 	border: 2px solid #e40e59
 }
+.soonTask{
+	border: 2px solid #f57404
+}
 .card-top{
 	display: flex;
 	justify-content: space-between;
