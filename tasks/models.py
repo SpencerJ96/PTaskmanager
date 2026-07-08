@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Task(models.Model):
 	STATUS_CHOICES = [
@@ -27,6 +28,7 @@ class Task(models.Model):
 	status = models.CharField(max_length=200, choices=STATUS_CHOICES, default="notStarted")
 	priority = models.CharField(max_length=200, choices=PRIORITY_CHOICES, default="low")
 	category = models.CharField(max_length=200, choices=CATEGORY_CHOICES, default="miscellaneous")
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 	def __str__(self):
 		return self.title
