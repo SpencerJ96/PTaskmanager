@@ -21,6 +21,10 @@
 		<li><a href="{% url 'task_filter' %}?category=shopping">Shopping</a></li>
 		<li><a href="{% url 'task_filter' %}?category=miscellaneous">Miscellaneous</a></li>
 		<li><a hx-get="{% url 'task_filter' %}?category=all" hx-target="#todo-grid" hx-swap="innerHTML">All</a></li>
+		<form method="POST" action="{% url 'logout' %}">
+			{% csrf_token %}
+			<button type="submit" class="logoutButton">Logout</button>
+		</form>
 
 	</ul>
 </nav>
