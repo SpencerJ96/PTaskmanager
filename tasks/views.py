@@ -3,6 +3,8 @@ from django.utils import timezone
 from .models import Task
 from datetime import timedelta
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+
 
 
 @login_required
@@ -40,6 +42,7 @@ def task_list(request):
 		"notStarted_offset" : notStarted_offset,
 		"today" : today,
 		"soon" : soon
+		
 	})
  
 
@@ -108,3 +111,13 @@ def task_edit(request, task_id):
 	editTask.priority = request.POST.get("priority")
 	editTask.save()
 	return redirect ("/tasks/")
+
+def register (request):
+	if request.method == "POST": #If the request is a post, generate djangos userform passing in the requests data so it can auto map to Djangos user model
+		form = UserCreationForm(request.POST)
+		if form.is_valid():
+			form.save()
+			return redirect("/accounts/login/") #Check its valid, save it and return to login
+	else:
+		form = UserCreationForm() 
+	return render (request, "registration/register.html", {"form": form}) #If validation fails or its a get request, return the register template with the form object to display validation errors
