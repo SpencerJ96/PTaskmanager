@@ -112,12 +112,19 @@ def task_edit(request, task_id):
 	editTask.save()
 	return redirect ("/tasks/")
 
+
+
+#Regardless of Code order, GET always runs first. 
 def register (request):
-	if request.method == "POST": #If the request is a post, generate djangos userform passing in the requests data so it can auto map to Djangos user model
+	#Runs once user submits register. Post request recieved. Map the POST content(what user input) to the userCreationForm
+	if request.method == "POST": 
 		form = UserCreationForm(request.POST)
-		if form.is_valid():
+		if form.is_valid(): #Django validates fields, saves and redirects to login.
 			form.save()
-			return redirect("/accounts/login/") #Check its valid, save it and return to login
-	else:
+			return redirect("/accounts/login/") 		
+	#Anything that isnt a post is treated as a GET. User clicks register. GET request runs. Creates Django form object
+	else:	
 		form = UserCreationForm() 
-	return render (request, "registration/register.html", {"form": form}) #If validation fails or its a get request, return the register template with the form object to display validation errors
+		#Render the register.html passing in the empty form object.
+	return render (request, "registration/register.html", {"form": form}) 
+	#Render works as a fallback, if validation fails, form still exists - return the invalid form object back through the HTML to display validation errors

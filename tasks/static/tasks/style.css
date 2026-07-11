@@ -482,6 +482,75 @@ main{
 	justify-content: flex-end;
 }
 
+.RegisterFieldWrapper{
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #ede7f6;
+}
+
+.RegisterField {
+	background: #f8f4ff;
+	border-radius: 20px;
+	padding: 40px;
+	width: 360px;
+	box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.RegisterField label {
+	font-family: 'Outfit', sans-serif;
+	color: #9b72cf;
+	font-weight: 600;
+	font-size: 14px;
+}
+
+.RegisterField input {
+	padding: 10px 14px;
+	border-radius: 25px;
+	border: 1px solid #9b72cf;
+	background-image: #ede7f6;
+	font-family: 'Outfit', sans-serif;
+	width: 100%;
+}
+
+.RegisterField ul {
+	font-size: 11px;
+	color: #aaa;
+	padding-left: 16px;
+}
+
+.RegisterSubmitButton{
+	text-align: center;
+	display: flex;
+	justify-content: center;
+}
+
+.RegisterLoginText{
+	text-align: center;
+	display: flex;
+	justify-content: center;
+}
+
+#registerButton {
+    background: #9e64f6;
+    color: #ffffff;
+    border: none;
+    border-radius: 25px;
+    padding: 8px 24px;
+    font-family: 'Outfit', sans-serif;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+#registerButton:hover {
+    background: rgb(153, 19, 171);
+    transform: scale(1.05);
+}
+
 .loginFieldWrapper {
     min-height: 100vh;
     display: flex;
