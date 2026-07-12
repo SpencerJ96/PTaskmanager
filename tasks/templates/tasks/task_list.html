@@ -35,6 +35,11 @@
 </header>
 
 <main>
+	{% for message in messages %}
+		<div class="flashwrapper">
+		<p class="flash-message"> {{ message }}</p>
+		</div>
+	{% endfor %}
 
 <div class="dashboard-card">
 
@@ -78,6 +83,8 @@
 					>Edit Task</button>
 			</div>
 		</div>
+		{% empty %}
+		<p class="noTasks">No Tasks yet - Add one</p>
 		{% endfor %}
 		</div>
 		<div class="view-more">
@@ -228,7 +235,7 @@
 			document.querySelector('[name="due_date"]').value = button.dataset.duedate
 			document.querySelector('[name="status"]').value = button.dataset.status
 			document.querySelector('[name="category"]').value = button.dataset.category
-			
+
 			document.getElementById("taskForm").action = "/tasks/edit/" + button.dataset.id + "/"
 			document.getElementById("taskModal").classList.remove("hidden")
 			document.getElementById("submitModalButton").textContent = "Edit Task"
@@ -236,6 +243,14 @@
 	})
 
 	document.querySelector('[name="due_date"]').min = new Date().toISOString().split('T')[0];
+
+	setTimeout(function(){
+		document.querySelectorAll(".flash-message").forEach(function(msg){
+			msg.style.transition = "opacity 1s";
+			msg.style.opacity = "0";
+			setTimeout(function() { msg.remove(); }, 1000);
+		});
+	}, 3000);
 </script>
 
 </body>

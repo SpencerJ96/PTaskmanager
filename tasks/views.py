@@ -4,6 +4,7 @@ from .models import Task
 from datetime import timedelta
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
 
 
 
@@ -63,6 +64,7 @@ def task_create(request):
 				#The first variable refers to the model, the second the form input variable
 		new_task = Task(title=title, body=body, priority=priority, due_date=due_date, category=category, status=status, user=request.user)
 		new_task.save()
+		messages.success(request, "Task Created!")
 	return redirect("/tasks/")
 
 @login_required
@@ -74,7 +76,8 @@ def task_status(request, task_id):				    #Task_id comes from button in browswer
 		task.status = "completed"										
 		task.completed_at = timezone.now()	        #Update completed_at
 					
-	task.save()										#Save to DB
+	task.save()
+	messages.success(request, "Status Updated!")										#Save to DB
 	return redirect("/tasks/")						#Redirect to tasks page
 
 
@@ -94,22 +97,26 @@ def task_filter(request):		#Key in URL (HTML) has to match what you're reading i
 	else:
 		tasks = Task.objects.filter(category=taskcategory, status__in=["notStarted", "inProgress"], user=request.user) # Filter all tasks where the model category matches the taskcategory variable. and status matches
 	return render(request, "tasks/partials/task_grid.html", {"all_tasks" : tasks}) #Only returning a fragment of the HTML from HTMX, just drop the task grid without reloading anything else 
+
 @login_required
 def task_delete(request, task_id):
     deleteTask = Task.objects.get(id=task_id)
     deleteTask.delete()
+    messages.success(request, "Task Deleted")
     next_url = request.POST.get("next", "/tasks/") # python .get safely read the value by key (/tasks/completed/ is the value of next in the HTML) fall back to /tasks/ if no "next" key
     return redirect(next_url)
+
 @login_required
 def task_edit(request, task_id):
 	editTask = Task.objects.get(id=task_id) #Fetch the Task object using get and pass in the task_id from the browser ("tasks/4")
 	editTask.title = request.POST.get("title")
 	editTask.body = request.POST.get("body")
-	editTask.due_date = request.POST.get("due_date")
+	editTask.due_date = request.POST.get("due_date") or None
 	editTask.status = request.POST.get("status")
 	editTask.category = request.POST.get("category")
 	editTask.priority = request.POST.get("priority")
 	editTask.save()
+	messages.success(request, "Task has been edited")
 	return redirect ("/tasks/")
 
 
