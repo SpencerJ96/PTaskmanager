@@ -228,6 +228,7 @@
 			document.querySelector('[name="due_date"]').value = button.dataset.duedate
 			document.querySelector('[name="status"]').value = button.dataset.status
 			document.querySelector('[name="category"]').value = button.dataset.category
+			
 			document.getElementById("taskForm").action = "/tasks/edit/" + button.dataset.id + "/"
 			document.getElementById("taskModal").classList.remove("hidden")
 			document.getElementById("submitModalButton").textContent = "Edit Task"

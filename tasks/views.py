@@ -102,7 +102,7 @@ def task_delete(request, task_id):
     return redirect(next_url)
 @login_required
 def task_edit(request, task_id):
-	editTask = Task.objects.get(id=task_id)
+	editTask = Task.objects.get(id=task_id) #Fetch the Task object using get and pass in the task_id from the browser ("tasks/4")
 	editTask.title = request.POST.get("title")
 	editTask.body = request.POST.get("body")
 	editTask.due_date = request.POST.get("due_date")

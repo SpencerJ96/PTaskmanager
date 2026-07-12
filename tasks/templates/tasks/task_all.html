@@ -21,12 +21,15 @@
 		<li><a href="{% url 'task_filter' %}?category=shopping">Shopping</a></li>
 		<li><a href="{% url 'task_filter' %}?category=miscellaneous">Miscellaneous</a></li>
 		<li><a hx-get="{% url 'task_filter' %}?category=all" hx-target="#todo-grid" hx-swap="innerHTML">All</a></li>
-
+		<form method="POST" action="{% url 'logout' %}">
+			{% csrf_token %}
+			<button type="submit" class="logoutButton">Logout</button>
+		</form>
 	</ul>
 </nav>
 
 <header>
-	<h1 class="headerTitle">Welcome Back {{ request.user.username }}</h1>
+	<h1 class="headerTitle">Welcome Back {{ request.user.username }} </h1>
 	<input type="text" placeholder="Search Tasks..">
 </header>
 
@@ -66,6 +69,8 @@
 					{% csrf_token %}
 					<button type="submit" class="deleteButton">Delete</button>
 					</form>
+					<button class="editButton" data-title="{{ each_task.title }}" data-body="{{ each_task.body }}" data-priority="{{ each_task.priority }}" data-duedate="{{ each_task.due_date|date:'Y-m-d' }}" data-category="{{ each_task.category }}" data-status="{{ each_task.status }}" data-id="{{ each_task.id }}"
+					>Edit Task</button>
 				</div>
 		</div>
 	</div>
@@ -73,5 +78,96 @@
 </div>
 
 </main>
+<div id="taskModal" class="modal hidden">
+	<div class="modal-content">
+		<button id="closeModal">✕</button>
+		<form method="POST" action="{% url 'task_create' %}" id="taskForm">
+			 {% csrf_token %}
+			 <div class="formInput">
+				<label>Title</label>
+				 <input type="text" name="title">
+			</div>
+			 <div class="formInput">
+				<label>Task</label>
+				 <input type="text" name="body">
+			</div>
+			<div class="formInput">
+				<label>Priority</label>
+				 <select name="priority">
+					<option value="high">High</option>
+					<option value="medium">Medium</option>
+					<option value="low">Low</option>
+				 </select>
+			</div>
+			<div class="formInput">
+				<label>Date Due</label>
+				 <input type="date" name="due_date">
+			</div>
+			<div class="formInput">
+				<label>Category</label>
+				 <select name="category">
+					<option value="work">Work</option>
+					<option value="dog">Dog</option>
+					<option value="gym">Gym</option>
+					<option value="housework">Housework</option>
+					<option value="shopping">Shopping</option>
+					<option value="miscellaneous">Miscellaneous</option>
+				 </select>
+			</div>
+			<div class="formInput">
+				<label>Status</label>
+				<select name="status">
+					<option value="notStarted">Not Started</option>
+					<option value="inProgress">In Progress</option>
+				</select>
+			</div>
+			<div class="submitModal">
+				<button type="submit" id="submitModalButton">Create Task</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script>
+	
+	document.getElementById("closeModal").addEventListener("click", function(){
+		document.getElementById("taskModal").classList.add("hidden");
+		document.getElementById("taskForm").action = "/tasks/create/"
+		document.getElementById("submitModalButton").textContent = "Create Task"
+	})
+
+	document.addEventListener("keydown", function(e){
+		if (e.key === "Escape") {
+			document.getElementById("taskModal").classList.add("hidden");
+			document.getElementById("taskForm").action = "/tasks/create/"
+			document.getElementById("submitModalButton").textContent = "Create Task"
+		}
+	});
+
+	document.getElementById("taskModal").addEventListener("click", function(e){
+		if (e.target === this){
+			this.classList.add("hidden");
+			document.getElementById("taskForm").action = "/tasks/create/"
+			document.getElementById("submitModalButton").textContent = "Create Task"
+		}
+	})
+
+	document.querySelectorAll(".editButton").forEach(function(button){
+		button.addEventListener("click", function(){
+			document.querySelector('[name="title"]').value = button.dataset.title
+			document.querySelector('[name="body"]').value = button.dataset.body
+			document.querySelector('[name="priority"]').value = button.dataset.priority
+			document.querySelector('[name="due_date"]').value = button.dataset.duedate
+			document.querySelector('[name="status"]').value = button.dataset.status
+			document.querySelector('[name="category"]').value = button.dataset.category
+			
+			document.getElementById("taskForm").action = "/tasks/edit/" + button.dataset.id + "/"
+			document.getElementById("taskModal").classList.remove("hidden")
+			document.getElementById("submitModalButton").textContent = "Edit Task"
+		})
+	})
+
+	document.querySelector('[name="due_date"]').min = new Date().toISOString().split('T')[0];
+</script>
 </body>
 </html>
