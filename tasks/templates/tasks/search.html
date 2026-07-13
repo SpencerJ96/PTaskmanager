@@ -8,7 +8,6 @@
 	<title>Document</title>
 </head>
 <body>
-	
 	<nav>
 	<ul>
 		<li><a href="{% url 'task_list' %}">Home</a></li>
@@ -25,7 +24,6 @@
 			{% csrf_token %}
 			<button type="submit" class="logoutButton">Logout</button>
 		</form>
-
 	</ul>
 </nav>
 
@@ -38,15 +36,16 @@
 </header>
 
 <main>
-		{% for message in messages %}
+
+	{% for message in messages %}
 		<div class="flashwrapper">
 		<p class="flash-message"> {{ message }}</p>
 		</div>
 	{% endfor %}
 
-<h2 class="allTasksHeader">Completed Tasks</h2>
+<h2 class="allTasksHeader">All Tasks</h2>
 <div class="task-list">
-	{% for each_task in completed_tasks %}
+	{% for each_task in searchTerm %}
 	<div class="task-row">
 
 		<div class="row-left">
@@ -70,9 +69,12 @@
 		<div class="row-right">
 			<p class="task-due">{{ each_task.due_date }}</p>
 				<div class="card-actions">
+					<form method="POST" action="{% url 'task_status' each_task.id %}">
+					{% csrf_token %}
+					<button type="submit" class="statusButton">Next Status</button>
+					</form>
 					<form method="POST" action="{% url 'task_delete' each_task.id %}">
 					{% csrf_token %}
-					<input type="hidden" name="next" value="/tasks/completed/">
 					<button type="submit" class="deleteButton">Delete</button>
 					</form>
 					<button class="editButton" data-title="{{ each_task.title }}" data-body="{{ each_task.body }}" data-priority="{{ each_task.priority }}" data-duedate="{{ each_task.due_date|date:'Y-m-d' }}" data-category="{{ each_task.category }}" data-status="{{ each_task.status }}" data-id="{{ each_task.id }}"
@@ -82,7 +84,6 @@
 	</div>
 	{% endfor %}
 </div>
-
 </main>
 <div id="taskModal" class="modal hidden">
 	<div class="modal-content">
@@ -134,9 +135,9 @@
 	</div>
 </div>
 
-<script>
 
-	document.getElementById("closeModal").addEventListener("click", function(){
+<script>
+		document.getElementById("closeModal").addEventListener("click", function(){
 		document.getElementById("taskModal").classList.add("hidden");
 		document.getElementById("taskForm").action = "/tasks/create/"
 		document.getElementById("submitModalButton").textContent = "Create Task"
@@ -158,7 +159,8 @@
 		}
 	})
 
-	document.querySelectorAll(".editButton").forEach(function(button){
+
+		document.querySelectorAll(".editButton").forEach(function(button){
 		button.addEventListener("click", function(){
 			document.querySelector('[name="title"]').value = button.dataset.title
 			document.querySelector('[name="body"]').value = button.dataset.body
@@ -182,6 +184,7 @@
 	}, 3000);
 
 	document.querySelector('[name="due_date"]').min = new Date().toISOString().split('T')[0];
+
 </script>
 </body>
 </html>

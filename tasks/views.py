@@ -135,3 +135,10 @@ def register (request):
 		#Render the register.html passing in the empty form object.
 	return render (request, "registration/register.html", {"form": form}) 
 	#Render works as a fallback, if validation fails, form still exists - return the invalid form object back through the HTML to display validation errors
+
+
+def userSearch(request):
+	q = request.GET.get("q")
+	searchTerm = Task.objects.filter(title__icontains=q, user=request.user)
+	return render (request, "tasks/search.html", {"searchTerm" : searchTerm})
+	

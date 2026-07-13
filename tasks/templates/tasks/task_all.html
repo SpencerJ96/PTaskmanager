@@ -29,11 +29,19 @@
 </nav>
 
 <header>
-	<h1 class="headerTitle">Welcome Back {{ request.user.username }} </h1>
-	<input type="text" placeholder="Search Tasks..">
+	<form method="GET" action="{% url 'userSearch' %}">
+		 {% csrf_token %}
+	<input type="text" name="q" placeholder="Search Tasks..">
+	</form>
 </header>
 
 <main>
+
+		{% for message in messages %}
+		<div class="flashwrapper">
+		<p class="flash-message"> {{ message }}</p>
+		</div>
+	{% endfor %}
 
 <h2 class="allTasksHeader">All Tasks</h2>
 <div class="task-list">
@@ -166,6 +174,14 @@
 			document.getElementById("submitModalButton").textContent = "Edit Task"
 		})
 	})
+
+		setTimeout(function(){
+		document.querySelectorAll(".flash-message").forEach(function(msg){
+			msg.style.transition = "opacity 1s";
+			msg.style.opacity = "0";
+			setTimeout(function() { msg.remove(); }, 1000);
+		});
+	}, 3000);
 
 	document.querySelector('[name="due_date"]').min = new Date().toISOString().split('T')[0];
 </script>
