@@ -128,7 +128,7 @@ def register (request):
 		form = UserCreationForm(request.POST)
 		if form.is_valid(): #Django validates fields, saves and redirects to login.
 			form.save()
-			return redirect("/accounts/login/") 		
+			return redirect("/tasks/") 		
 	#Anything that isnt a post is treated as a GET. User clicks register. GET request runs. Creates Django form object
 	else:	
 		form = UserCreationForm() 
@@ -138,7 +138,7 @@ def register (request):
 
 
 def userSearch(request):
-	q = request.GET.get("q")
-	searchTerm = Task.objects.filter(title__icontains=q, user=request.user)
-	return render (request, "tasks/search.html", {"searchTerm" : searchTerm})
+	q = request.GET.get("q")  #Q matches the input name in the search field(It can be called anything). Get that input. The URL will read ?q="Searchterm"
+	searchTerm = Task.objects.filter(title__icontains=q, user=request.user) #Create a variable that stores filtered objects. Any title field that contains the search term. AND the current user field matches the Browser user field sent in request
+	return render (request, "tasks/search.html", {"searchTerm" : searchTerm}) #return a render with the request back, the URL to send them too and pass in the context dictonary ( the searched term )
 	

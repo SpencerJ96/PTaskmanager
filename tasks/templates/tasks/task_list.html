@@ -15,20 +15,20 @@
 		<li><a href="{% url 'task_list' %}">Home</a></li>
 		<li><a href="{% url 'task_all' %}">All Tasks</a></li>
 		<li><a href="{% url 'task_allCompleted' %}">Completed Tasks</a></li>
-		<li><a hx-get="{% url 'task_filter' %}?category=gym" hx-target="#todo-grid" hx-swap="innerHTML">Gym</a></li>
-		<li><a hx-get="{% url 'task_filter' %}?category=work" hx-target="#todo-grid" hx-swap="innerHTML">Work</a></li>
-		<li><a hx-get="{% url 'task_filter' %}?category=dog" hx-target="#todo-grid" hx-swap="innerHTML">Jasper</a></li>
-		<li><a hx-get="{% url 'task_filter' %}?category=housework" hx-target="#todo-grid" hx-swap="innerHTML">Housework</a></li>
-		<li><a hx-get="{% url 'task_filter' %}?category=shopping" hx-target="#todo-grid" hx-swap="innerHTML">Shopping</a></li>
-		<li><a hx-get="{% url 'task_filter' %}?category=miscellaneous" hx-target="#todo-grid" hx-swap="innerHTML">Miscellaneous</a></li>
-		<li><a hx-get="{% url 'task_filter' %}?category=all" hx-target="#todo-grid" hx-swap="innerHTML">All</a></li>
+		<li><a href="#" hx-get="{% url 'task_filter' %}?category=gym" hx-target="#todo-grid" hx-swap="innerHTML">Gym</a></li>
+		<li><a href="#" hx-get="{% url 'task_filter' %}?category=work" hx-target="#todo-grid" hx-swap="innerHTML">Work</a></li>
+		<li><a href="#" hx-get="{% url 'task_filter' %}?category=dog" hx-target="#todo-grid" hx-swap="innerHTML">Jasper</a></li>
+		<li><a href="#" hx-get="{% url 'task_filter' %}?category=housework" hx-target="#todo-grid" hx-swap="innerHTML">Housework</a></li>
+		<li><a href="#" hx-get="{% url 'task_filter' %}?category=shopping" hx-target="#todo-grid" hx-swap="innerHTML">Shopping</a></li>
+		<li><a href="#" hx-get="{% url 'task_filter' %}?category=miscellaneous" hx-target="#todo-grid" hx-swap="innerHTML">Miscellaneous</a></li>
+		<li><a href="#" hx-get="{% url 'task_filter' %}?category=all" hx-target="#todo-grid" hx-swap="innerHTML">All</a></li>
 		<form method="POST" action="{% url 'logout' %}">
 			{% csrf_token %}
 			<button type="submit" class="logoutButton">Logout</button>
 		</form>
 	</ul>
 </nav>
-
+<button id="hamburger">☰</button>
 <header>
 	<h1 class="headerTitle">Welcome Back {{ request.user.username }} </h1>
 	<form method="GET" action="{% url 'userSearch' %}">
@@ -204,6 +204,21 @@
 </div>
 
 <script>
+	document.getElementById("hamburger").addEventListener("click", function() {
+    const nav = document.querySelector("nav");
+    const isOpen = nav.classList.contains("nav-open");
+    if (isOpen) {
+        nav.classList.remove("nav-open");
+    } else {
+        nav.classList.add("nav-open");
+    }
+});
+	document.querySelectorAll("nav a").forEach(function(link){
+		link.addEventListener("click", function(){
+			document.querySelector("nav").classList.remove("nav-open");
+		});
+	});
+
 	document.getElementById("openModal").addEventListener("click", function(){
 		document.getElementById("taskModal").classList.remove("hidden");
 	});

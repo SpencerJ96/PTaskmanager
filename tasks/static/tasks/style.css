@@ -636,3 +636,87 @@ main{
 	transform: translateX(-50%);
 	z-index: 999;
 }
+
+@media (max-width: 768px) {
+	nav{
+		transform: translateX(-220px);
+		transition: transform 0.3s;
+	}
+	main, header {
+		margin-left: 0;
+	}
+	.dashboard-card {
+    flex-direction: column;
+    padding: 12px;
+}
+
+.todo-section {
+    border-right: none;
+    border-bottom: 1px solid #e0d4f7;
+    padding-right: 0;
+    padding-bottom: 24px;
+}
+
+.todo-grid {
+    grid-template-columns: 1fr;
+}
+
+.completed-grid {
+    grid-template-columns: 1fr;
+}
+
+.right-panel {
+    flex: none;
+}
+
+.rings-section {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+header input {
+    width: 100%;
+}
+
+.task-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.row-right {
+    justify-content: flex-start;
+}
+nav ul {
+	padding-top: 60px;
+}
+nav.nav-open {
+    transform: translateX(0px);
+}
+header {
+    padding-top: 60px;
+}
+}
+@media (min-width: 769px) {
+    #hamburger {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    #hamburger {
+        display: block;
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 9999;
+        background: #9b72cf;
+        border: none;
+        color: white;
+        font-size: 20px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+}
